@@ -25,6 +25,14 @@ else
 	exit 1
 fi
 
+ask_to_continue () {
+	read -p "Do you want to continue? <y>: " ASK
+	if [ $ASK != "y" ]; then
+		echo "Aborted."
+		exit 0
+	fi
+}
+
 install_anki () {
 	INSTALLNAME="anki-${REMOTEVERSION}-linux"
 	cd "/tmp"
@@ -54,22 +62,14 @@ if [ $METHOD -lt 2 ]; then
 	echo "Latest Anki Version: $REMOTEVERSION"
 	if [ $RV1 -gt $LV1 ] || [[ $RV1 -ge $LV1 && $RV2 -gt $LV2 ]] || [[ $RV1 -ge $LV1 && $RV2 -ge $LV2 && $RV3 -gt $LV3 ]]; then
 		if [ $METHOD == "0" ]; then
-			read -p "Do you want to continue? <y>: " ASK
-			if [ $ASK != "y" ]; then
-				echo "Aborted."
-				exit 0
-			fi
+			ask_to_continue
 		fi
 		install_anki
 	fi
 else
 	echo "Latest Anki Version: $REMOTEVERSION"
 	if [ $METHOD == "2" ]; then
-		read -p "Do you want to continue? <y>: " ASK
-		if [ $ASK != "y" ]; then
-			echo "Aborted."
-			exit 0
-		fi
+		ask_to_continue
 	fi
 	install_anki
 fi
