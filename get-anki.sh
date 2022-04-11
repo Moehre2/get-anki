@@ -9,6 +9,12 @@ METHOD=0
 # 2: install
 # 3: forced-install
 ANKI=$(which anki)
+ZSTD=$(which zstd)
+
+if [ ! -f "$ZSTD" ]; then
+	echo "Please install zstd: apt-get install zstd"
+	exit 2
+fi
 
 if [ -z "$1" ]; then
 	if [ -f "$ANKI" ]; then
@@ -34,11 +40,11 @@ ask_to_continue () {
 }
 
 install_anki () {
-	INSTALLNAME="anki-${REMOTEVERSION}-linux"
+	INSTALLNAME="anki-${REMOTEVERSION}-linux-qt6"
 	cd "/tmp"
-	wget -q -O "${INSTALLNAME}.tar.bz2" --show-progress "${DOWNLOADPATH}${REMOTEVERSION}/${INSTALLNAME}.tar.bz2"
+	wget -q -O "${INSTALLNAME}.tar.zst" --show-progress "${DOWNLOADPATH}${REMOTEVERSION}/${INSTALLNAME}.tar.zst"
 	echo -n "Decompressing... "
-	tar xjf "${INSTALLNAME}.tar.bz2"
+	tar xaf "${INSTALLNAME}.tar.zst"
 	echo "Done."
 	cd "$INSTALLNAME"
 	if [ "$(whoami)" == "root" ]; then
