@@ -57,7 +57,7 @@ install_anki () {
 REMOTEURL=$(wget --spider "$LATESTPATH" 2>&1 | grep "Location:" | cut -d " " -f 2)
 REMOTEVERSION=$(echo "$REMOTEURL" | rev | cut -d "/" -f 1 | rev)
 if [ $METHOD -lt 2 ]; then
-	LOCALVERSION=$("$ANKI" -v | cut -d " " -f 2)
+	LOCALVERSION=$("$ANKI" -v | tail -n1 | cut -d " " -f 2)
 	RV1=$(echo "$REMOTEVERSION" | cut -d "." -f 1)
 	RV2=$(echo "$REMOTEVERSION" | cut -d "." -f 2)
 	RV3=$(echo "$REMOTEVERSION" | cut -d "." -f 3)
